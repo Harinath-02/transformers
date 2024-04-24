@@ -330,7 +330,7 @@ class LlavaForConditionalGeneration(LlavaPreTrainedModel):
         # 5. Fill the embeddings corresponding to the images. Anything that is still zeros needs filling
         image_to_overwrite = torch.all(final_embedding == 0, dim=-1)
         image_to_overwrite &= image_to_overwrite.cumsum(-1) - 1 >= nb_image_pad[:, None].to(target_device)
-
+        print(image_to_overwrite,"this",image_features.shape[:-1],"my:",image_features.shape[:-1].numel())
         if image_to_overwrite.sum() != image_features.shape[:-1].numel():
             raise ValueError(
                 f"The input provided to the model are wrong. The number of image tokens is {torch.sum(special_image_token_mask)} while"
